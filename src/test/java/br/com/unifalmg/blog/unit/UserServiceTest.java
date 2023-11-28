@@ -58,4 +58,45 @@ public class UserServiceTest {
                 service.findById(2));
     }
 
+    @Test
+    @DisplayName("getAllUsers > When there are no users > return an empty list")
+    void getAllUsersWhenThereAreNoUsersReturnAnEmptyList() {
+        List<User> users = new ArrayList<User>();
+        when(repository.findAll()).thenReturn(users);
+        assertTrue(service.getAllUsers().isEmpty());
+    }
+
+    @Test
+    @DisplayName("getAllUsers > when the list is not empty > return the users")
+    void getAllUsersWhenTheListIsNotEmptyReturnTheUsers() {
+        when(repository.findAll()).thenReturn(List.of(
+                User.builder()
+                        .id(1)
+                        .name("Leanne Graham")
+                        .username("Bret")
+                        .build(),
+                User.builder()
+                        .id(2)
+                        .name("Ervin Howell")
+                        .username("Antonette")
+                        .build(),
+                User.builder()
+                        .id(3)
+                        .name("Mrs. Dennis Schulist")
+                        .username("Leopoldo_Corkery")
+                        .build())
+        );
+        List<User> users = service.getAllUsers();
+        assertAll(
+                ()->assertEquals(users.get(0).getName(),"Leanne Graham"),
+                ()->assertEquals(users.get(0).getUsername(),"Bret"),
+                ()->assertEquals(users.get(1).getName(),"Ervin Howell"),
+                ()->assertEquals(users.get(1).getUsername(),"Antonette"),
+                ()->assertEquals(users.get(2).getName(),"Mrs. Dennis Schulist"),
+                ()->assertEquals(users.get(2).getUsername(),"Leopoldo_Corkery")
+        );
+    }
+
+
+
 }
